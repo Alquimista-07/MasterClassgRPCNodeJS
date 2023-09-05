@@ -1,0 +1,14 @@
+Para dar inicio con el proyecto es necesario realiza los siguientes pasos:
+
+1. Inicialización del proyecto para ello ejecutamos el comando: 
+    
+    npm init -y
+
+2. Instalación de dependencias:
+
+    npm install google-protobuf @grpc/grpc-js
+
+3. Dependencia de desarrollo y la cual básicamente nos proporciona el compilador de Protocol Buffers protoc junto con el 
+   complemento para generar objetos de cliente y servicio para usar con las bibliotecas Node gRPC.
+
+    npm install grpc-tools --save-dev
