@@ -11,4 +11,41 @@ Para dar inicio con el proyecto es necesario realiza los siguientes pasos:
 3. Dependencia de desarrollo y la cual básicamente nos proporciona el compilador de Protocol Buffers protoc junto con el 
    complemento para generar objetos de cliente y servicio para usar con las bibliotecas Node gRPC.
 
-    npm install grpc-tools --save-dev
+    npm install -g grpc-tools
+
+4. Para configurar la generación automática podemos hacerlo mediante scripts.
+
+    4.1. A continuación nos dirigimos al repositorio de GitHub: 
+         https://github.com/Clement-Jean/grpc-node-js-course/tree/main
+
+    4.2. Allí encontramos una carpeta llamada scripts y para la cual hay que tener en cuenta 
+         los siguiente: 
+
+                - El archivo llamado gen.ps1 es para Windows y se ejecuta con la powershell
+                - El archivo llamado gen.sh es para Mac y Linux
+
+    4.3. Procedemos a descargar o copiar el contenido del archivo anteriormente mencionado dependiendo
+         del sistema operativo.
+
+    4.4. Creamos la carpeta scripts dentro de nuestro poryecto y pegamos el archivo descargado o creamos
+         un archivo con el mismo nombre y extensión para pegar el contenido en caso de que lo hayamos 
+         realizado de esa forma.
+    
+    4.5. Posteriormente nos dirigimos al archivo package.json y en el apartado de scripts vamos a borrar 
+         el "test" que se encuentra por defecto. Y a continuación pegar la siguiente script dependiendo
+         el sistema operativo que estemos usando.
+
+         - Windows:
+            "pb:win:gen": "powershell -ExecutionPolicy unrestricted ./scripts/gen.ps1 greet calculator blog"
+
+        - Mac y Linux
+            "pb:gen": "./scripts/gen.sh greet calculator blog"
+
+5. Luego de realizar los pasos anteriores procedemos a hacer lo siguiente:
+    
+    - Para windows ejecutamos lo siguiente:
+        npm run pb:win:gen
+
+    - Para Mac y Linux ejecutamos lo siguiente:
+        $ chmod +x run pb:gen
+        $ npm run pb:gen
