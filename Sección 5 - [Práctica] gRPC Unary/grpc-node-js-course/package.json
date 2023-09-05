@@ -7,7 +7,10 @@
     "pb:win:gen": "powershell -ExecutionPolicy unrestricted ./scripts/gen.ps1 greet calculator blog",
     
     "greet:server": "node greet/server/index.js",
-    "greet:client": "node greet/client/index.js"
+    "greet:client": "node greet/client/index.js",
+
+    "calculator:server": "node calculator/server/index.js",
+    "calculator:client": "node calculator/client/index.js"
   },
   "keywords": [],
   "author": "",
