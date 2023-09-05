@@ -16,7 +16,19 @@ function doGreet(client){
 
         console.log(`Greet: ${res.getResult()}`);
 
-    });
+    })
+}
+
+function doGreetManyTimes(client) {
+    console.log('doGreetManyTimes was invoked');
+
+    const req = new GreetRequest()
+      .setFirstName('Ariadna');
+    const call = client.greetManyTimes(req);
+
+    call.on('data', (res) => {
+        console.log(`GreetManyTimes: ${res.getResult()}`);
+    })
 }
 
 function main() {
@@ -24,8 +36,8 @@ function main() {
     const creds = grpc.ChannelCredentials.createInsecure();
     const client = new GreetServiceClient('localhost:50051', creds);
   
-    doGreet(client)
-    
+    // doGreet(client)
+    doGreetManyTimes(client);
     client.close();
     
 };
