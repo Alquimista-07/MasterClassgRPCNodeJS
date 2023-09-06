@@ -1,0 +1,19 @@
+Instalar Docker
+
+Para que las compilaciones sean más replicables, decidí usar Docker en esta sección. 
+Para instalarlo puedes ir a:
+
+https://docs.docker.com/get-docker/
+
+Y luego, dependiendo de su sistema operativo, elija el instalador adecuado.
+
+============ Windows/MacOS ============
+Antes de ejecutar el comando relacionado con Docker y Docker-Compose, deberá asegurarse 
+de que Docker Desktop se esté ejecutando. Para hacer eso, simplemente abre la aplicación 
+y después de unos minutos deberías estar listo para comenzar.
+
+============ Linux ============
+Para los usuarios de Linux, deberán instalar Docker y Docker-Compose. Para instalar 
+Docker-Compose puedes ir a:
+
+https://docs.docker.com/compose/installl
