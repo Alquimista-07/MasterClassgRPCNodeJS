@@ -50,3 +50,21 @@ exports.greetEveryone = (call, _) => {
 
   call.on('end', () => call.end());
 }
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+exports.greetWithDealine = async(call, callback) => {
+  console.log('GreetWithDeadline was invoked');
+
+  for (let i = 0; i < 3; ++i){
+    if (call.cancelled) {
+      return console.log('The client cancelled the request!');
+    }
+    await sleep(1000);
+  }
+
+  const res = new pb.GreetResponse()
+    .setResult(`Hello ${call.request.getFirstName()}`);
+    
+  callback(null, res);
+}
