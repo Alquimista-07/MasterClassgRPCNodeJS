@@ -1,19 +1,25 @@
 const fs = require('fs');
 const grpc = require('@grpc/grpc-js');
 const serviceImpl = require('./service_impl');
-const {BlogServiceService} = require('../proto/blog_grpc_pb');
+const {BlogServiceService} = require('../proto/blog_grpc_pb')
+const {MongoClient} = require('mongodb');
 
 const addr = 'localhost:50051';
+const uri = 'mongodb://root:root@localhost:27017/'
+const mongoClient = new MongoClient(uri);
 
-function cleanup(server) {
+global.collection = undefined;
+
+async function cleanup(server) {
     console.log('Cleanup');
 
     if (server){
+        await mongoClient.close();
         server.forceShutdown();
     }
 }
 
-function main () {
+async function main () {
     const server = new grpc.Server();
     const tls = true;
     let creds;
@@ -36,6 +42,11 @@ function main () {
         cleanup(server);
     });
 
+    await mongoClient.connect();
+
+    const database = mongoClient.db('blogdb');
+    collection = database.collection('blog');
+
     server.addService(BlogServiceService, serviceImpl);
     server.bindAsync(addr, creds, (err, _) => {
         if (err) {
@@ -48,4 +59,4 @@ function main () {
     console.log(`Listening on: ${addr}`);
 }
 
-main();
+main().catch(cleanup);
