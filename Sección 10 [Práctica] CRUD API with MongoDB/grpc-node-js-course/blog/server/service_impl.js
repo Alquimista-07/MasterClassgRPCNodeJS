@@ -1,5 +1,6 @@
 const grpc = require('@grpc/grpc-js');
 const {Blog, BlogId} = require('../proto/blog_pb');
+const {ObjectId} = require('mongodb');
 
 function blogToDocument(blog) {
     return {
@@ -23,6 +24,34 @@ function checkNotAcknowledged(res, callback) {
     }
 }
 
+function checkOID(id, callback) {
+    try {
+        return new ObjectId(id);
+    } catch (err) {
+        callback({
+            code: grpc.status.INTERNAL,
+            message: 'Invalid OID'
+        });
+    }
+}
+
+function checkNotFound(res, callback) {
+    if (!res || res.matchedCount == 0) {
+        callback({
+            code: grpc.status.NOT_FOUND,
+            message: 'Could not find blog',
+        })
+    }
+}
+
+function documentToBlog(doc) {
+    return new Blog()
+      .setId(doc._id.toString())
+      .setAuthorId(doc.author_id)
+      .setTitle(doc.title)
+      .setContent(doc.content);
+}
+
 exports.createBlog = async (call, callback) => {
     const data = blogToDocument(call, request);
 
@@ -32,5 +61,14 @@ exports.createBlog = async (call, callback) => {
         const blogId = new BlogId().setId(id);
 
         callback(null, blogId);
+    }).catch((err) => internal(err, callback));
+}
+
+exports.readBlog = async (call, callback) => {
+    const oid = checkOID(call.request.getId(), callback);
+
+    await collection.findOne({_id: oid}).then((res) => {
+        checkNotFound(res, callback);
+        callback(null, documentToBlog(res));
     }).catch((err) => internal(err, callback));
 }
