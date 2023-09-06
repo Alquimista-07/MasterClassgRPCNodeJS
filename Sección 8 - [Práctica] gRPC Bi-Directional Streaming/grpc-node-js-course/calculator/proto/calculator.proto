@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package calculator;
+
+import "sum.proto";
+import "primes.proto";
+import "avg.proto";
+
+service CalculatorService {
+    rpc Sum (SumRequest) returns (SumResponse);
+    rpc Primes (PrimeRequest) returns (stream PrimeResponse);
+    rpc Avg (stream AvgRequest) returns (AvgResponse);
+}
