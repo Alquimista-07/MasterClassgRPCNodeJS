@@ -37,7 +37,7 @@ function checkOID(id, callback) {
 }
 
 function checkNotFound(res, callback) {
-    if (!res || res.matchedCount == 0) {
+    if (!res || res.matchedCount == 0 || res.deleteCount == 0) {
         callback({
             code: grpc.status.NOT_FOUND,
             message: 'Could not find blog',
@@ -96,3 +96,13 @@ exports.listBlogs = async (call, callback) =>
         code: grpc.status.INTERNAL,
         message: 'Could not list blogs',
       }));
+
+exports.deleteBlog = async (call, callback) => {
+    const oid = checkOID(call.request.getId(), callback);
+
+    await collection.deleteOne({_id: oid}).then((res) => {
+        checkNotFound(res, callback);
+        checkNotAcknowledged(res, callback);
+        callback(null, new Empty());
+    }).catch((err) => internal(err, callback));
+}
