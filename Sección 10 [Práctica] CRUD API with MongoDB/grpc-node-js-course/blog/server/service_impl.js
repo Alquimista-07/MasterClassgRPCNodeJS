@@ -86,3 +86,13 @@ exports.updateBlog = async (call, callback) => {
             callback(null, new Empty());
         }).catch((err) => internal(err, callback));
 }
+
+exports.listBlogs = async (call, callback) => 
+    await collection.find()
+      .map((doc) => documentToBlog(doc))
+      .forEach((blog) => call.write(blog))
+      .then(() => call.end())
+      .catch((err) => call.destroy({
+        code: grpc.status.INTERNAL,
+        message: 'Could not list blogs',
+      }));
