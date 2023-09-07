@@ -40,6 +40,27 @@ function readBlog(client, id) {
     });
 }
 
+function updateBlog(client, id) {
+    console.log('---updateBlog was invoked---');
+
+    return new Promise((resolve, reject) => {
+        const req = new Blog()
+          .setId(id)
+          .setAuthorId('not Clement')
+          .setTitle('My first blog (updated)')
+          .setContent('Content of the first blog, with some awesome additions')
+
+          client.updateBlog(req, (err, _) => {
+            if (err) {
+            reject(err)
+          }
+
+          console.log('Blog was updated!');
+          resolve();
+        });
+    });
+}
+
 async function main() {
     const tls = true;
     let creds;
@@ -56,6 +77,7 @@ async function main() {
     const id = await createBlog(client);
     await readBlog(client, id);
     // await readBlog(client, 'aNonExistingId');
+    await updateBlog(client, id);
 
     client.close();
 }
