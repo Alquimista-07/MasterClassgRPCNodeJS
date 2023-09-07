@@ -2,6 +2,7 @@ const fs = require('fs');
 const grpc = require('@grpc/grpc-js');
 const {BlogServiceClient} = require('../proto/blog_grpc_pb');
 const {Blog, BlogId} = require('../proto/blog_pb');
+const { Empty } = require('google-protobuf/google/protobuf/empty_pb');
 
 function createBlog(client) {
     console.log('---createBlog was invoked---');
@@ -61,6 +62,27 @@ function updateBlog(client, id) {
     });
 }
 
+function listBlogs(client) {
+    console.log('---listBlogs was invoked---');
+
+    return new Promise((resolve, reject) => {
+        const req = new Empty();
+        const call = client.listBlogs(req);
+
+        call.on('data', (res) => {
+            console.log(res);
+        });
+
+        call.on('error', (err) => {
+            reject(err);
+        });
+
+        call.on('end', () => {
+            resolve();
+        })
+    });
+}
+
 async function main() {
     const tls = true;
     let creds;
@@ -78,6 +100,7 @@ async function main() {
     await readBlog(client, id);
     // await readBlog(client, 'aNonExistingId');
     await updateBlog(client, id);
+    await listBlogs(client);
 
     client.close();
 }
