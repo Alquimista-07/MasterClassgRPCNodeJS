@@ -1,7 +1,8 @@
 # MasterClass de gRPC [NodeJS]: Creación de API y microservicios modernos
 
-
 ¡Mejor que la API REST! Cree una API Javascript HTTP/2 para un microservicio NodeJS con gRPC, Protocol Buffers (protobuf)
+
+Curso de [Udemy](https://www.udemy.com/course/grpc-nodejs/)
 
 ## Lo que aprenderás
 
